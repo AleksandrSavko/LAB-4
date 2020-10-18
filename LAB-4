@@ -23,7 +23,6 @@ int main()
     do
     {
         printf("\nvvedite stroku s (%3d simvolov):",k);
-        fflush(stdout);
         gets(s);                                                    // ввод строки s
         ss=strlen(s);                                               // определение длины строки s
         printf("\nvvedite stroku a :");
