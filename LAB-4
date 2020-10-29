@@ -1,100 +1,99 @@
-// Даны натуральное число n и группы символов s1,…,sn и a1,…,an. Удалить из строки s1,…,sn все символы, которые принадлежат строке a1,…,an.
+// Даны натуральное число n и группы символов s1, …, sn и a1, …, an.Удалить из строки s1, …, sn все символы, которые принадлежат строке a1, …, an.
 #include <stdio.h>
-#include<stdlib.h>
+#include <stdlib.h>
+#include <locale.h>
+
 // прототипы функций
-char* mem(int);                                                                                                         
-void del(char*,char*,int);                                          
+char* mem(int);
+void del(char*, char*, int);
 int  strlen(char*);
-int srv(int,int,int,int);
+int srv(int, int, int, int);
 void show(char*);
 int main()
 {
+    setlocale(LC_ALL, "RUS");
     int k;                                                          // размерность строк 
     int u;                                                          // счётчик для проверки правильности ввода
     int ss;                                                         //количество символов в строке s
     int sa;                                                         //количество символов в строке а
-    char *s , *a;
-    printf("\nvvedite dlinu stroki (ne bolee 80 simvoolov)\n");
-    scanf("%d", &k);                                                // ввод размерности строки
-    while (getchar()!='\n');
-    s=mem(k);                                                       // выделение памяти для строки s
-    a=mem(k);                                                       // выделение памяти для строки a
+    char* s, * a;
+    printf("\nВведите длину строк\n");
+    scanf_s("%d", &k);                                                // ввод размерности строки
+    while (getchar() != '\n');
+    s = mem(k);                                                       // выделение памяти для строки s
+    a = mem(k);                                                       // выделение памяти для строки a
     //цикл для проверки правильности ввода
     do
     {
-        printf("\nvvedite stroku s (%3d simvolov):",k);
+        printf("\nВведите строку S (%3d символов):", k);
         gets(s);                                                    // ввод строки s
-        ss=strlen(s);                                               // определение длины строки s
-        printf("\nvvedite stroku a :");
+        ss = strlen(s);                                               // определение длины строки s
+        printf("\nВведите строку A (%3d символов):", k);
         gets(a);                                                    // ввод строки a
-        sa=strlen(a);                                               // определение длины строки a
-        u=0;                                                                
-        u=srv(ss,sa,k,u);                                           // определение количества ошибок ввода                                      
-    }
-    while(u!=0);                                                    // выполнять цикл пока значение счётчика не равно 0
-    del(s,a,k);                                                     // удаление символов строки а из строки s          
-    printf("\n preobrazovannaya stroka s\n");
-    show(s);                                                        // вывод преобразованной строки s
+        sa = strlen(a);                                               // определение длины строки a
+        u = 0;
+        u = srv(ss, sa, k, u);                                           // определение количества ошибок ввода                                      
+    } while (u != 0);                                                    // выполнять цикл пока значение счётчика не равно 0
+    del(s, a, k);                                                     // удаление символов строки а из строки s          
+    printf("\nПреобразованная строка S\n");
+    show(s);                                                            // вывод преобразованной строки s
+    free(s);
+    free(a);
     return 0;
 }
 // функция выделения памяти для строки
 char* mem(int t)
 {
-    char *str;
-    str=(char*)calloc(t+1,1);
+    char* str;
+    str = (char*)calloc(t + 1, 1);
     return str;
 }
 // функция удаления символов строки а из строки s   
-void del(char*mss,char*msa,int t)
+void del(char* mss, char* msa, int t)
 {
-    int i,j,y;
-    for(i=0;*(msa+i)!='\0';i++)                                      // цикл по строке а
+    int i, j, y;
+    for (i = 0; *(msa + i) != '\0'; i++)                                      // цикл по строке а
     {
-        for(j=0;*(mss+j)!='\0';j++)                                  // цикл по строке s
+        for (j = 0; *(mss + j) != '\0'; j++)                                  // цикл по строке s
         {
-            if(*(msa+i)==*(mss+j))                                   // если символ из строки а совпадаетс символом из строки s
+            if (*(msa + i) == *(mss + j))                                   // если символ из строки а совпадает с символом из строки s
             {
-                for(y=j;*(mss+y)!='\0';y++)                          // начиная со следующего символа
-                *(mss+y)=*(mss+y+1);                                 // сместить все символы на один символ влево
-                j--;                                                 
+                for (y = j; *(mss + y) != '\0'; y++)                          // начиная со следующего символа
+                    *(mss + y) = *(mss + y + 1);                                 // сместить все символы на один символ влево
+                j--;
             }
         }
     }
- 
+
 }
 // функция вывода преобразованного массива s 
-void show(char *mss)
+void show(char* mss)
 {
-    if(*mss=='\0')                                                   // если первый символ преобразованной строки s равен \0
-    printf("\niz stroki byli udaleny vse simvoly\n");                // вывести что символов в строке нет
+    if (*mss == '\0')                                                   // если первый символ преобразованной строки s равен \0
+        printf("\niz stroki byli udaleny vse simvoly\n");                // вывести что символов в строке нет
     else
-    puts(mss);                                                       
+        puts(mss);
 }
 // функция вычисления длины строки
-int strlen (char*mss)
- {
-     int m=0;
-     while (*(mss+m)!='\0')
-     m++;
-     return m;
- }
+int strlen(char* mss)
+{
+    int m = 0;
+    while (*(mss + m) != '\0')
+        m++;
+    return m;
+}
 // функция проверки правильности ввода
-int srv(int ss,int sa,int k,int u)
-{   
-    if(ss!=sa)                                                     // если длина строки s не равна длине строки а
+int srv(int ss, int sa, int k, int u)
+{
+    if (ss != sa)                                                     // если длина строки s не равна длине строки а
     {
-        printf("\nstroki doljny byt odinakovy po razmeru!\n");     
+        printf("\nСтроки должны быть одинаковы по размеру!\n");
         u++;                                                       // увеличить значение счетчика
     }
-    if(ss!=k || sa!=k)                                             // если размерность строк не соблюдена         
+    if (ss != k || sa != k)                                             // если размерность строк не соблюдена         
     {
-        printf("\nstroki doljny soderjat %3d simvolov! \n",k);
+        printf("\nСтроки должны содержать %d символов! \n", k);
         u++;                                                      // увеличить значение счётчика  
     }
-    if(ss>=80 || sa>=80)                                               // если введено больше 80 символов         
-    {
-        printf("\nstroki doljny byt' ne dlinnee 80 simvolov! \n",k);
-        u++;                                                      // увеличить значение счётчика  
-    }
-    return u;                                                     // вернуть значение счетчика          
+        return u;                                                     // вернуть значение счетчика          
 }
